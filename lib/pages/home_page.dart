@@ -1,11 +1,13 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:logger/logger.dart';
+import 'dart:convert';
 import 'package:goal_app/src/goal.dart';
+import 'package:goal_app/src/logger.dart';
 
 class HomePageState extends State<HomePage> {
   late Future<Goal> goal;
+  Logger logger = createLogger("HomePageState");
 
   @override
   void initState() {
@@ -15,7 +17,15 @@ class HomePageState extends State<HomePage> {
 
   Future<Goal> fetchRandomGoal() async {
     String s = await rootBundle.loadString('assets/goals.json');
-    print(s);
+    try {
+      final json = jsonDecode(s) as Map<String, dynamic>;
+      // logger.i(json);
+      final goals = json['goals'];
+      var randomItem = (goals..shuffle()).first;
+      logger.i("Chosen goal $randomItem");
+    } catch (e) {
+      logger.e(e);
+    }
     return const Goal(goalString: "temp");
   }
 
