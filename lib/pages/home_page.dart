@@ -19,14 +19,13 @@ class HomePageState extends State<HomePage> {
     String s = await rootBundle.loadString('assets/goals.json');
     try {
       final json = jsonDecode(s) as Map<String, dynamic>;
-      // logger.i(json);
       final goals = json['goals'];
       var randomItem = (goals..shuffle()).first;
-      logger.i("Chosen goal $randomItem");
+      return Goal(goalString: randomItem);
     } catch (e) {
       logger.e(e);
+      return Goal.makeDefault();
     }
-    return const Goal(goalString: "temp");
   }
 
   @override
@@ -53,13 +52,13 @@ class HomePageState extends State<HomePage> {
           if (snapshot.hasError) {
             return const Center(child: Text("An error has occurred"));
           } else if (snapshot.hasData) {
-            return const SizedBox(
+            return SizedBox(
               height: double.infinity,
               width: double.infinity,
               child: Align(
-                alignment: AlignmentDirectional(0, 0),
-                child: Text('This is where the prompt would go',
-                    style: TextStyle(
+                alignment: const AlignmentDirectional(0, 0),
+                child: Text(snapshot.data!.goalString,
+                    style: const TextStyle(
                         color: Colors.blue,
                         fontSize: 18,
                         fontWeight: FontWeight.bold)),
