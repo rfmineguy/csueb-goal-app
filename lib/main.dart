@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
-import 'pages/home.dart';
+import 'package:logger/logger.dart';
+import 'pages/home_page.dart';
+import 'src/logger.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final log = Logger(printer: SimpleLogPrinter());
+
+  MyApp({super.key});
 
   // This widget is the root of your application.
   @override
